@@ -86,6 +86,8 @@ const char *wsrep_dbug_option;
 const char *wsrep_notify_cmd;
 const char *wsrep_status_file;
 const char *wsrep_allowlist;
+const char *wsrep_sst_tmp_dir;
+char *wsrep_sst_tmp_dir_real=nullptr;
 
 ulong   wsrep_debug;                            // Debug level logging
 my_bool wsrep_convert_LOCK_to_trx;              // Convert locking sessions to trx
@@ -911,6 +913,9 @@ int wsrep_init()
   if (!wsrep_data_home_dir || strlen(wsrep_data_home_dir) == 0)
     wsrep_data_home_dir= mysql_real_data_home;
 
+  /* In case of errors, SST tmp dir is not set */
+  wsrep_sst_tmp_dir_check();
+
   Wsrep_server_state::init_provider_services();
   if (Wsrep_server_state::instance().load_provider(
       wsrep_provider,
@@ -947,6 +952,7 @@ int wsrep_init()
 
   WSREP_DEBUG("SR storage init for: %s",
               (wsrep_SR_store_type == WSREP_SR_STORE_TABLE) ? "table" : "void");
+
   return 0;
 }
 
@@ -1066,6 +1072,12 @@ void wsrep_deinit(bool free_options)
   provider_vendor[0]=  '\0';
 
   wsrep_inited= 0;
+
+  if (wsrep_sst_tmp_dir_real)
+  {
+    my_free(wsrep_sst_tmp_dir_real);
+    wsrep_sst_tmp_dir_real= nullptr;
+  }
 
   if (wsrep_provider_capabilities != NULL)
   {
