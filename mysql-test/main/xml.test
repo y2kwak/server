@@ -236,7 +236,9 @@ select UpdateXML(@xml, '/a/b/@bb2', 'bb3="bb3"');
 #
 select updatexml('<div><div><span>1</span><span>2</span></div></div>',
                  '/','<tr><td>1</td><td>2</td></tr>') as upd1;
+--disable_warnings
 select updatexml('', '/', '') as upd2;
+--enable_warnings
 
 #
 #  Bug#16234 XML: Crash if ExtractValue()
@@ -707,7 +709,9 @@ SELECT UPDATEXML(CONVERT('' USING swe7), TRUNCATE('',1), 0);
 --echo #
 --echo # Bug#12375190: UPDATEXML CRASHES ON SIMPLE INPUTS
 --echo #
+--disable_warnings
 SELECT UPDATEXML('','(a)/a','');
+--enable_warnings
 SELECT UPDATEXML('<a><a>x</a></a>','(a)/a','<b />');
 SELECT UPDATEXML('<a><c><a>x</a></c></a>','(a)/a','<b />');
 SELECT UPDATEXML('<a><c><a>x</a></c></a>','(a)//a','<b />');
