@@ -119,6 +119,9 @@ public:
   uint size_of() const  override { return sizeof(*this); }
   int  store(const char *to, size_t length, CHARSET_INFO *charset) override;
   using Field_str::store;
+  enum_conv_type rpl_conv_type_from(const Conv_source &source,
+                                    const Relay_log_info *rli,
+                                    const Conv_param &param) const override;
 };
 
 
