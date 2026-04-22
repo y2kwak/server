@@ -874,6 +874,11 @@ static int setval(const struct my_option *opts, void *value, char *argument,
       }
       break;
     case GET_SET:
+      if (!argument[0])
+      {
+        res= EXIT_ARGUMENT_INVALID;
+        goto ret;
+      }
       *((ulonglong*)value)= find_typeset(argument, opts->typelib, &err);
       if (err)
       {
