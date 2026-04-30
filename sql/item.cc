@@ -1013,6 +1013,16 @@ bool Item_field::intersect_field_part_of_key(void *arg)
 }
 
 
+bool Item_field::get_context_for_vcol_processor(void *arg)
+{
+  Name_resolution_context **to_context= (Name_resolution_context **) arg;
+  if (!*to_context)
+    *to_context= context;
+  DBUG_ASSERT(*to_context == context);
+  return 0;
+}
+
+
 bool Item::check_cols(uint c)
 {
   if (c != 1)

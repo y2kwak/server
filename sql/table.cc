@@ -1141,7 +1141,7 @@ static void update_vcol_key_covering(Field *vcol_field)
   Item *item= vcol_field->vcol_info->expr;
   /* Collect indexes that cover vcol's expression */
   key_map part_of_key= vcol_field->table->s->keys_for_keyread;
-  item->walk(&Item::intersect_field_part_of_key, &part_of_key, WALK_SUBQUERY);
+  item->walk(&Item::intersect_field_part_of_key, &part_of_key, 0);
 
   vcol_field->vcol_direct_part_of_key= vcol_field->part_of_key;
   /*
