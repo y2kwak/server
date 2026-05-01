@@ -13,7 +13,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1335 USA
 
-INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/include ${ZLIB_INCLUDE_DIRS} ${PCRE_INCLUDE_DIRS})
+INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/include ${ZLIB_INCLUDE_DIRS} ${PCRE_INCLUDE_DIRS} pcre2-8})
 
 # Default install component for the files is Server here
 SET(MYSQL_INSTALL_COMPONENT Server)
@@ -49,7 +49,7 @@ ADD_CUSTOM_TARGET(GenError
 IF(NOT CMAKE_CROSSCOMPILING AND TARGET mariadbd)
   ADD_EXECUTABLE(generate_option_list generate_option_list.cc)
   TARGET_LINK_LIBRARIES(generate_option_list mysys pcre2-8)
-  TARGET_INCLUDE_DIRECTORIES(generate_option_list PRIVATE ${PCRE_INCLUDE_DIRS})
+  TARGET_INCLUDE_DIRECTORIES(generate_option_list PRIVATE ${PCRE_INCLUDE_DIRS} pcre2-8)
   GET_PROPERTY(dynamic_plugins GLOBAL PROPERTY SERVER_DYNAMIC_PLUGINS)
   GET_PROPERTY(is_multi_config GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
   IF(is_multi_config)
