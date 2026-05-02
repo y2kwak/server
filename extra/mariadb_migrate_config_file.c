@@ -792,6 +792,7 @@ static void generator_free(struct generator *generator)
   delete_dynamic(&generator->old_version);
   delete_dynamic(&generator->unsupported_version);
   delete_dynamic(&generator->mariadbd_additions);
+  delete_dynamic(&generator->client_server);
   my_free(generator->output_group);
 }
 
@@ -2267,7 +2268,7 @@ static void print_to_width(const char *line, uint width)
 
   for (start= line ; *line ; line++)
   {
-    if ((line-start) >= width)
+    if ((uint)(line-start) >= width)
     {
       if (!space)
         space= line;                              /* No space */
@@ -2520,8 +2521,6 @@ int main(int argc, char **argv)
   {
     /* Write 'add options' only to the first found config file */
     add_new_options_once= 1;
-    /* Ensure that symbolic links are not expanded. Needed for mtr */
-    my_defaults_use_original_paths= 1;
     if ((error= my_load_defaults(config_file, groups_to_use,
                                  &count, &arguments, &default_directories)))
       goto handle_error;

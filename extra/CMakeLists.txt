@@ -13,7 +13,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1335 USA
 
-INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/include ${ZLIB_INCLUDE_DIRS} ${PCRE_INCLUDE_DIRS} pcre2-8})
+INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/include ${ZLIB_INCLUDE_DIRS} ${PCRE_INCLUDE_DIRS})
 
 # Default install component for the files is Server here
 SET(MYSQL_INSTALL_COMPONENT Server)
@@ -46,10 +46,12 @@ ADD_CUSTOM_TARGET(GenError
                   DEPENDS
                   ${CMAKE_BINARY_DIR}/include/mysqld_error.h.tmp)
 
-IF(NOT CMAKE_CROSSCOMPILING AND TARGET mariadbd)
+# this approach doesn't work with cross-compiing (runs mariadbd)
+# and doesn't work with ASAN, because LSAN complains about RocksDB (MDEV-36345).
+IF(NOT CMAKE_CROSSCOMPILING AND NOT WITH_ASAN AND TARGET mariadbd)
   ADD_EXECUTABLE(generate_option_list generate_option_list.cc)
   TARGET_LINK_LIBRARIES(generate_option_list mysys pcre2-8)
-  TARGET_INCLUDE_DIRECTORIES(generate_option_list PRIVATE ${PCRE_INCLUDE_DIRS} pcre2-8)
+  TARGET_INCLUDE_DIRECTORIES(generate_option_list PRIVATE ${PCRE_INCLUDE_DIRS})
   GET_PROPERTY(dynamic_plugins GLOBAL PROPERTY SERVER_DYNAMIC_PLUGINS)
   GET_PROPERTY(is_multi_config GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
   IF(is_multi_config)
@@ -83,7 +85,7 @@ IF(NOT CMAKE_CROSSCOMPILING AND TARGET mariadbd)
   ENDIF()
 
   STRING(REPLACE ";" ":" escaped_plugin_load "${plugin_load}")
-  SET(genhdr ${CMAKE_BINARY_DIR}/include/mariadbd_options.h)
+  SET(genhdr ${CMAKE_BINARY_DIR}/extra/mariadbd_options.h)
   ADD_CUSTOM_COMMAND(OUTPUT ${genhdr}
    # COMMAND ${CMAKE_COMMAND} -E echo "Executing ${populate_plugin_dir}"
    ${populate_plugin_dir}
@@ -105,6 +107,7 @@ IF(NOT CMAKE_CROSSCOMPILING AND TARGET mariadbd)
  # Make sure consumers cannot compile before the header exists:
   SET_SOURCE_FILES_PROPERTIES("${genhdr}" PROPERTIES GENERATED TRUE)
   TARGET_LINK_LIBRARIES(mariadb-migrate-config-file PRIVATE mysys)
+  TARGET_INCLUDE_DIRECTORIES(mariadb-migrate-config-file PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 ENDIF()
 
 MYSQL_ADD_EXECUTABLE(my_print_defaults my_print_defaults.c COMPONENT Client)

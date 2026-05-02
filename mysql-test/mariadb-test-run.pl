@@ -1544,7 +1544,7 @@ sub command_line_setup {
     $opt_vardir= $default_vardir;
   }
 
-  # We make the path asbolute, as the server will do a chdir() before usage
+  # We make the path absolute, as the server will do a chdir() before usage
   unless ( $opt_vardir =~ m,^/, or
            (IS_WINDOWS and $opt_vardir =~ m,^[a-z]:[/\\],i) )
   {

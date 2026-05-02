@@ -23,7 +23,7 @@ default_regex_flags=invalid
 EOF
 
 --cat_file $MYSQLTEST_VARDIR/tmp/tmp2.cnf
---replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR
+--replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR $MYSQLTEST_REAL_VARDIR MYSQLTEST_VARDIR
 --exec $MARIADB_MIGRATE_CONFIG_FILE --defaults-file=$MYSQLTEST_VARDIR/tmp/tmp1.cnf --mariadbd=$MYSQLD --update --verify --edit=remove
 --replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR
 --cat_file $MYSQLTEST_VARDIR/tmp/tmp1.cnf
@@ -56,7 +56,7 @@ log-bin=1
 log_error_verbosity   = 3
 EOF
 --cat_file $MYSQLTEST_VARDIR/tmp/tmp2.cnf
---replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR
+--replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR $MYSQLTEST_REAL_VARDIR MYSQLTEST_VARDIR
 --exec $MARIADB_MIGRATE_CONFIG_FILE --defaults-file=$MYSQLTEST_VARDIR/tmp/tmp1.cnf --mariadbd=$MYSQLD --update --verify --edit=last
 
 --echo # Changed files
@@ -65,7 +65,7 @@ EOF
 --cat_file $MYSQLTEST_VARDIR/tmp/tmp2.cnf
 
 --echo # Verify no more changes
---replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR
+--replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR $MYSQLTEST_REAL_VARDIR MYSQLTEST_VARDIR
 --exec $MARIADB_MIGRATE_CONFIG_FILE --defaults-file=$MYSQLTEST_VARDIR/tmp/tmp1.cnf --mariadbd=$MYSQLD --update --verify --edit=last
 
 --remove_file $MYSQLTEST_VARDIR/tmp/tmp1.cnf
@@ -81,7 +81,7 @@ invalid=true
 alter_algorithm=invalid
 EOF
 --cat_file $MYSQLTEST_VARDIR/tmp/tmp1.cnf
---replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR
+--replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR $MYSQLTEST_REAL_VARDIR MYSQLTEST_VARDIR
 --exec $MARIADB_MIGRATE_CONFIG_FILE --defaults-file=$MYSQLTEST_VARDIR/tmp/tmp1.cnf --mariadbd=$MYSQLD --update --verify --edit=comment
 --cat_file $MYSQLTEST_VARDIR/tmp/tmp1.cnf
 --remove_file $MYSQLTEST_VARDIR/tmp/tmp1.cnf
@@ -122,7 +122,7 @@ port=33
 key_buffer_size=20M
 EOF
 --cat_file $MYSQLTEST_VARDIR/tmp/tmp1.cnf
---replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR
+--replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR $MYSQLTEST_REAL_VARDIR MYSQLTEST_VARDIR
 --exec $MARIADB_MIGRATE_CONFIG_FILE --defaults-file=$MYSQLTEST_VARDIR/tmp/tmp1.cnf --mariadbd=$MYSQLD --update --verify --error-group=mysqld-5.7 --edit=inline --from=mariadb
 --echo # Changed file
 --cat_file $MYSQLTEST_VARDIR/tmp/tmp1.cnf
@@ -158,7 +158,7 @@ port=33
 key_buffer_size=20M
 EOF
 --cat_file $MYSQLTEST_VARDIR/tmp/tmp1.cnf
---replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR
+--replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR $MYSQLTEST_REAL_VARDIR MYSQLTEST_VARDIR
 --exec $MARIADB_MIGRATE_CONFIG_FILE --defaults-file=$MYSQLTEST_VARDIR/tmp/tmp1.cnf --mariadbd=$MYSQLD --update --verify --error-group=mysqld-5.7 --edit=last --from=mariadb
 --echo # Changed file
 --cat_file $MYSQLTEST_VARDIR/tmp/tmp1.cnf
@@ -219,7 +219,7 @@ key_buffer_size=20M
 alter_algorithm=invalid
 EOF
 --cat_file $MYSQLTEST_VARDIR/tmp/tmp1.cnf
---replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR
+--replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR $MYSQLTEST_REAL_VARDIR MYSQLTEST_VARDIR
 --exec $MARIADB_MIGRATE_CONFIG_FILE --defaults-file=$MYSQLTEST_VARDIR/tmp/tmp1.cnf --mariadbd=$MYSQLD --update --verify --error-group=unknown --edit=last --from=mariadb
 --cat_file $MYSQLTEST_VARDIR/tmp/tmp1.cnf
 --remove_file $MYSQLTEST_VARDIR/tmp/tmp1.cnf
@@ -232,7 +232,7 @@ EOF
 key_buffer_size=20M
 EOF
 --cat_file $MYSQLTEST_VARDIR/tmp/tmp1.cnf
---replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR
+--replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR $MYSQLTEST_REAL_VARDIR MYSQLTEST_VARDIR
 --exec $MARIADB_MIGRATE_CONFIG_FILE --defaults-file=$MYSQLTEST_VARDIR/tmp/tmp1.cnf --mariadbd=$MYSQLD --update --verify --error-group=mysqld-5.7 --edit=last --from=mysql
 --cat_file $MYSQLTEST_VARDIR/tmp/tmp1.cnf
 --remove_file $MYSQLTEST_VARDIR/tmp/tmp1.cnf
@@ -245,7 +245,7 @@ EOF
 key_buffer_size=20M
 EOF
 --cat_file $MYSQLTEST_VARDIR/tmp/tmp1.cnf
---replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR
+--replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR $MYSQLTEST_REAL_VARDIR MYSQLTEST_VARDIR
 --exec $MARIADB_MIGRATE_CONFIG_FILE --defaults-file=$MYSQLTEST_VARDIR/tmp/tmp1.cnf --mariadbd=$MYSQLD --update --verify --error-group=mysqld-5.7 --edit=last --from=mysql --no-myisam
 --cat_file $MYSQLTEST_VARDIR/tmp/tmp1.cnf
 --remove_file $MYSQLTEST_VARDIR/tmp/tmp1.cnf
@@ -258,7 +258,7 @@ EOF
 key_buffer_size=20M
 EOF
 --cat_file $MYSQLTEST_VARDIR/tmp/tmp1.cnf
---replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR
+--replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR $MYSQLTEST_REAL_VARDIR MYSQLTEST_VARDIR
 --exec $MARIADB_MIGRATE_CONFIG_FILE --defaults-file=$MYSQLTEST_VARDIR/tmp/tmp1.cnf --mariadbd=$MYSQLD --update --verify --error-group=mysqld-5.7 --edit=last
 --cat_file $MYSQLTEST_VARDIR/tmp/tmp1.cnf
 --remove_file $MYSQLTEST_VARDIR/tmp/tmp1.cnf
@@ -271,7 +271,7 @@ EOF
 key_buffer_size=20M
 EOF
 --cat_file $MYSQLTEST_VARDIR/tmp/tmp1.cnf
---replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR
+--replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR $MYSQLTEST_REAL_VARDIR MYSQLTEST_VARDIR
 --exec $MARIADB_MIGRATE_CONFIG_FILE --defaults-file=$MYSQLTEST_VARDIR/tmp/tmp1.cnf --mariadbd=$MYSQLD --update --verify --error-group=mysqld-5.7 --edit=last --no-myisam
 --cat_file $MYSQLTEST_VARDIR/tmp/tmp1.cnf
 --remove_file $MYSQLTEST_VARDIR/tmp/tmp1.cnf
@@ -284,7 +284,7 @@ EOF
 default_week_format=1
 EOF
 --cat_file $MYSQLTEST_VARDIR/tmp/tmp1.cnf
---replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR
+--replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR $MYSQLTEST_REAL_VARDIR MYSQLTEST_VARDIR
 --exec $MARIADB_MIGRATE_CONFIG_FILE --defaults-file=$MYSQLTEST_VARDIR/tmp/tmp1.cnf --mariadbd=$MYSQLD --update --verify --error-group=mysqld-5.7 --edit=last --add-skip-slave-start
 --cat_file $MYSQLTEST_VARDIR/tmp/tmp1.cnf
 --remove_file $MYSQLTEST_VARDIR/tmp/tmp1.cnf
@@ -297,7 +297,7 @@ EOF
 skip_slave_start
 EOF
 #--cat_file $MYSQLTEST_VARDIR/tmp/tmp1.cnf
---replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR
+--replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR $MYSQLTEST_REAL_VARDIR MYSQLTEST_VARDIR
 --exec $MARIADB_MIGRATE_CONFIG_FILE --defaults-file=$MYSQLTEST_VARDIR/tmp/tmp1.cnf --mariadbd=$MYSQLD --update --verify --error-group=mysqld-5.7 --edit=last --add-skip-slave-start
 --cat_file $MYSQLTEST_VARDIR/tmp/tmp1.cnf
 --remove_file $MYSQLTEST_VARDIR/tmp/tmp1.cnf
@@ -313,7 +313,7 @@ audit_log-disabled
 audit_log=on
 EOF
 --cat_file $MYSQLTEST_VARDIR/tmp/tmp1.cnf
---replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR
+--replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR $MYSQLTEST_REAL_VARDIR MYSQLTEST_VARDIR
 --exec $MARIADB_MIGRATE_CONFIG_FILE --defaults-file=$MYSQLTEST_VARDIR/tmp/tmp1.cnf --mariadbd=$MYSQLD --update --verify --error-group=mysqld-5.7 --edit=last --add-skip-slave-start
 --cat_file $MYSQLTEST_VARDIR/tmp/tmp1.cnf
 --remove_file $MYSQLTEST_VARDIR/tmp/tmp1.cnf
@@ -327,7 +327,7 @@ audit_log=ON
 audit_log_file=name
 EOF
 --cat_file $MYSQLTEST_VARDIR/tmp/tmp1.cnf
---replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR
+--replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR $MYSQLTEST_REAL_VARDIR MYSQLTEST_VARDIR
 --exec $MARIADB_MIGRATE_CONFIG_FILE --defaults-file=$MYSQLTEST_VARDIR/tmp/tmp1.cnf --mariadbd=$MYSQLD --update --verify --error-group=mysqld-5.7 --edit=last --add-skip-slave-start
 --cat_file $MYSQLTEST_VARDIR/tmp/tmp1.cnf
 --remove_file $MYSQLTEST_VARDIR/tmp/tmp1.cnf
@@ -341,7 +341,7 @@ audit_log-disabled
 EOF
 --cat_file $MYSQLTEST_VARDIR/tmp/tmp1.cnf
 --replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR
---replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR
+--replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR $MYSQLTEST_REAL_VARDIR MYSQLTEST_VARDIR
 --exec $MARIADB_MIGRATE_CONFIG_FILE --defaults-file=$MYSQLTEST_VARDIR/tmp/tmp1.cnf --mariadbd=$MYSQLD --update --verify --error-group=mysqld-5.7 --edit=last --add-skip-slave-start
 --cat_file $MYSQLTEST_VARDIR/tmp/tmp1.cnf
 --remove_file $MYSQLTEST_VARDIR/tmp/tmp1.cnf
@@ -357,7 +357,7 @@ log_error_verbosity   = 3
 EOF
 --cat_file $MYSQLTEST_VARDIR/tmp/tmp1.cnf
 --replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR
---replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR
+--replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR $MYSQLTEST_REAL_VARDIR MYSQLTEST_VARDIR
 --exec $MARIADB_MIGRATE_CONFIG_FILE --defaults-file=$MYSQLTEST_VARDIR/tmp/tmp1.cnf --mariadbd=$MYSQLD --update --verify --error-group=mysqld-5.7 --edit=last --add-skip-slave-start
 --cat_file $MYSQLTEST_VARDIR/tmp/tmp1.cnf
 --remove_file $MYSQLTEST_VARDIR/tmp/tmp1.cnf
@@ -371,7 +371,7 @@ innodb_data_file_path=/var/mysql/test2
 key_buffer_size=20M
 EOF
 --cat_file $MYSQLTEST_VARDIR/tmp/tmp1.cnf
---replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR
+--replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR $MYSQLTEST_REAL_VARDIR MYSQLTEST_VARDIR
 --exec $MARIADB_MIGRATE_CONFIG_FILE --defaults-file=$MYSQLTEST_VARDIR/tmp/tmp1.cnf --mariadbd=$MYSQLD --update --verify --error-group=mysqld-5.7 --edit=last --fix-all
 --cat_file $MYSQLTEST_VARDIR/tmp/tmp1.cnf
 --remove_file $MYSQLTEST_VARDIR/tmp/tmp1.cnf
@@ -385,7 +385,7 @@ innodb_data_file_path=/var/mysql/test2
 key_buffer_size=20M
 EOF
 --cat_file $MYSQLTEST_VARDIR/tmp/tmp1.cnf
---replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR
+--replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR $MYSQLTEST_REAL_VARDIR MYSQLTEST_VARDIR
 --exec $MARIADB_MIGRATE_CONFIG_FILE --defaults-file=$MYSQLTEST_VARDIR/tmp/tmp1.cnf --mariadbd=$MYSQLD --update --verify --error-group=mysqld-5.7 --edit=last --fix-all --update-paths
 --cat_file $MYSQLTEST_VARDIR/tmp/tmp1.cnf
 --remove_file $MYSQLTEST_VARDIR/tmp/tmp1.cnf
@@ -406,10 +406,10 @@ dummy2=2
 innodb_data_file_path=/var/mysql/test2
 EOF
 --cat_file $MYSQLTEST_VARDIR/tmp/tmp1.cnf
---replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR
+--replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR $MYSQLTEST_REAL_VARDIR MYSQLTEST_VARDIR
 --error 2
 --exec $MARIADB_MIGRATE_CONFIG_FILE --defaults-file=$MYSQLTEST_VARDIR/tmp/tmp1.cnf --update-paths --add-mariadb-replication-compatibility
---replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR
+--replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR $MYSQLTEST_REAL_VARDIR MYSQLTEST_VARDIR
 --exec $MARIADB_MIGRATE_CONFIG_FILE --defaults-file=$MYSQLTEST_VARDIR/tmp/tmp1.cnf --mariadbd="not_found_here" --update --verify --edit=last --silent --update-paths --verify=0
 --echo # Changed file
 --cat_file $MYSQLTEST_VARDIR/tmp/tmp1.cnf
@@ -424,9 +424,9 @@ innodb_stats_sample_pages=1
 EOF
 --cat_file $MYSQLTEST_VARDIR/tmp/tmp1.cnf
 --replace_regex /### File[^\n]*/### File [name hidden]/
---replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR
+--replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR $MYSQLTEST_REAL_VARDIR MYSQLTEST_VARDIR
 --exec $MARIADB_MIGRATE_CONFIG_FILE --defaults-file=$MYSQLTEST_VARDIR/tmp/tmp1.cnf --print --edit=last
---replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR
+--replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR $MYSQLTEST_REAL_VARDIR MYSQLTEST_VARDIR
 --error 2
 --exec $MARIADB_MIGRATE_CONFIG_FILE --defaults-file=$MYSQLTEST_VARDIR/tmp/tmp1.cnf
 --remove_file $MYSQLTEST_VARDIR/tmp/tmp1.cnf
@@ -441,16 +441,16 @@ innodb_log_file_size=2G
 EOF
 --cat_file $MYSQLTEST_VARDIR/tmp/tmp1.cnf
 --echo # Checking file
---replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR
+--replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR $MYSQLTEST_REAL_VARDIR MYSQLTEST_VARDIR
 --error 2
 --exec $MARIADB_MIGRATE_CONFIG_FILE --defaults-file=$MYSQLTEST_VARDIR/tmp/tmp1.cnf
 --echo # Updating file
---replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR
+--replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR $MYSQLTEST_REAL_VARDIR MYSQLTEST_VARDIR
 --exec $MARIADB_MIGRATE_CONFIG_FILE --defaults-file=$MYSQLTEST_VARDIR/tmp/tmp1.cnf --update --verify --edit=last --mariadbd=$MYSQLD --verify
 --echo # Changed file
 --cat_file $MYSQLTEST_VARDIR/tmp/tmp1.cnf
 --echo # Checking if file is ok now
---replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR
+--replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR $MYSQLTEST_REAL_VARDIR MYSQLTEST_VARDIR
 --exec $MARIADB_MIGRATE_CONFIG_FILE --defaults-file=$MYSQLTEST_VARDIR/tmp/tmp1.cnf --verify=0
 --remove_file $MYSQLTEST_VARDIR/tmp/tmp1.cnf
 
@@ -478,11 +478,11 @@ character-set-server=utf8mb4
 EOF
 --cat_file $MYSQLTEST_VARDIR/tmp/tmp1.cnf
 --echo # MySQL -> MariaDB compatibility
---replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR
+--replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR $MYSQLTEST_REAL_VARDIR MYSQLTEST_VARDIR
 --exec $MARIADB_MIGRATE_CONFIG_FILE --defaults-file=$MYSQLTEST_VARDIR/tmp/tmp1.cnf --print --edit=last --verify=0 --add-mariadb-replication-compatibility
 
 --echo # MariaDB -> MySQL compatibility
---replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR
+--replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR $MYSQLTEST_REAL_VARDIR MYSQLTEST_VARDIR
 --exec $MARIADB_MIGRATE_CONFIG_FILE --defaults-file=$MYSQLTEST_VARDIR/tmp/tmp1.cnf --print --edit=last --verify=0 --add-mysql-replication-compatibility
 --remove_file $MYSQLTEST_VARDIR/tmp/tmp1.cnf
 
@@ -505,7 +505,7 @@ socket="/tmp/mysql8.sock"
 EOF
 --cat_file $MYSQLTEST_VARDIR/tmp/tmp1.cnf
 --echo # --add-client-server-group
---replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR
+--replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR $MYSQLTEST_REAL_VARDIR MYSQLTEST_VARDIR
 --exec $MARIADB_MIGRATE_CONFIG_FILE --defaults-file=$MYSQLTEST_VARDIR/tmp/tmp1.cnf --print --edit=last --verify=0 --add-client-server-group --update-paths
 --remove_file $MYSQLTEST_VARDIR/tmp/tmp1.cnf
 
@@ -522,7 +522,7 @@ port=99
 socket="/tmp/mysql8.sock"
 EOF
 --cat_file $MYSQLTEST_VARDIR/tmp/tmp1.cnf
---replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR
+--replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR $MYSQLTEST_REAL_VARDIR MYSQLTEST_VARDIR
 --exec $MARIADB_MIGRATE_CONFIG_FILE --defaults-file=$MYSQLTEST_VARDIR/tmp/tmp1.cnf --update --edit=last --add-client-server-group --mariadbd=$MYSQLD --verify
 --echo # Changed file
 --cat_file $MYSQLTEST_VARDIR/tmp/tmp1.cnf
@@ -538,13 +538,13 @@ socket="/tmp/mysql.sock"
 EOF
 --cat_file $MYSQLTEST_VARDIR/tmp/tmp1.cnf
 --echo # Testing with --copy-mysqld-groups=0
---replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR
+--replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR $MYSQLTEST_REAL_VARDIR MYSQLTEST_VARDIR
 --exec $MARIADB_MIGRATE_CONFIG_FILE --defaults-file=$MYSQLTEST_VARDIR/tmp/tmp1.cnf --update --edit=last --copy-mysqld-groups=0 --mariadbd=$MYSQLD --verify
 --echo # Testing with --copy-mysqld-groups=1
 --replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR
 --error 2
 --exec $MARIADB_MIGRATE_CONFIG_FILE --defaults-file=$MYSQLTEST_VARDIR/tmp/tmp1.cnf --copy-mysqld-groups=1
---replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR
+--replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR $MYSQLTEST_REAL_VARDIR MYSQLTEST_VARDIR
 --exec $MARIADB_MIGRATE_CONFIG_FILE --defaults-file=$MYSQLTEST_VARDIR/tmp/tmp1.cnf --update --edit=last --copy-mysqld-groups=1 --mariadbd=$MYSQLD --verify
 --cat_file $MYSQLTEST_VARDIR/tmp/tmp1.cnf
 --remove_file $MYSQLTEST_VARDIR/tmp/tmp1.cnf
@@ -583,21 +583,21 @@ EOF
 --cat_file $MYSQLTEST_VARDIR/tmp/tmp1.cnf
 --echo # Output from --print --edit=last --update-paths
 --replace_regex /### File[^\n]*/### File [name hidden]/
---replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR
+--replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR $MYSQLTEST_REAL_VARDIR MYSQLTEST_VARDIR
 --exec $MARIADB_MIGRATE_CONFIG_FILE --defaults-file=$MYSQLTEST_VARDIR/tmp/tmp1.cnf --mariadbd="not_found_here" --print --edit=last --update-paths
 
 --echo #
 --echo # Test that second update of file with 'last' will no do anything
 --echo #
---replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR
+--replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR $MYSQLTEST_REAL_VARDIR MYSQLTEST_VARDIR
 --exec $MARIADB_MIGRATE_CONFIG_FILE --defaults-file=$MYSQLTEST_VARDIR/tmp/tmp1.cnf --update --edit=last --update-paths --verify=0
 # Check file
---replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR
+--replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR $MYSQLTEST_REAL_VARDIR MYSQLTEST_VARDIR
 --exec $MARIADB_MIGRATE_CONFIG_FILE --defaults-file=$MYSQLTEST_VARDIR/tmp/tmp1.cnf --mariadbd=$MYSQLD --copy-mysqld-groups=0
---replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR
+--replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR $MYSQLTEST_REAL_VARDIR MYSQLTEST_VARDIR
 --exec $MARIADB_MIGRATE_CONFIG_FILE --defaults-file=$MYSQLTEST_VARDIR/tmp/tmp1.cnf --update-paths --mariadbd=$MYSQLD --copy-mysqld-groups=0
 --echo "Next command should not change anything"
---replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR
+--replace_result $MYSQLTEST_VARDIR MYSQLTEST_VARDIR $MYSQLTEST_REAL_VARDIR MYSQLTEST_VARDIR
 --exec $MARIADB_MIGRATE_CONFIG_FILE --defaults-file=$MYSQLTEST_VARDIR/tmp/tmp1.cnf --update --edit=last --update-paths --backup --verify=0
 --cat_file $MYSQLTEST_VARDIR/tmp/tmp1.cnf
 --remove_file $MYSQLTEST_VARDIR/tmp/tmp1.cnf

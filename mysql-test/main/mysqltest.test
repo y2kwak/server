@@ -2274,6 +2274,9 @@ EOF
 }
 
 cat_file $MYSQLTEST_VARDIR/tmp/app_while.tmp;
+echo ===;
+cat_file $MYSQLTEST_VARDIR/tmp/app_while.tmp 2; # feature sneaked inside MDEV-32745
+echo ===;
 remove_file $MYSQLTEST_VARDIR/tmp/app_while.tmp;
 
 # ----------------------------------------------------------------------------

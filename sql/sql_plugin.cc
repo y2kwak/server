@@ -1118,8 +1118,7 @@ static st_plugin_int *plugin_insert_or_reuse(struct st_plugin_int *plugin)
   NOTE
     Requires that a write-lock is held on LOCK_system_variables_hash
 */
-static enum install_status
-plugin_add(MEM_ROOT *tmp_root, bool if_not_exists,
+static enum install_status plugin_add(MEM_ROOT *tmp_root, bool if_not_exists,
            const LEX_CSTRING *name, LEX_CSTRING *dl, myf MyFlags)
 {
   struct st_plugin_int tmp, *maybe_dupe;
@@ -1808,7 +1807,8 @@ int plugin_init(int *argc, char **argv, int flags)
     }
 
     /* load and init plugins from the plugin table (unless done already) */
-    if (flags & PLUGIN_INIT_SKIP_PLUGIN_TABLE)
+    if (flags & PLUGIN_INIT_SKIP_PLUGIN_TABLE ||
+        plugin_table_engine_name.length == 0)
       break;
 
     mysql_mutex_unlock(&LOCK_plugin);
@@ -4072,13 +4072,13 @@ static int construct_options(MEM_ROOT *mem_root, struct st_plugin_int *tmp,
 
       if (opt->flags & PLUGIN_VAR_NOCMDOPT)
       {
-        char *val= global_system_variables.dynamic_variables_ptr + offset;
+        char **val= (char**)(global_system_variables.dynamic_variables_ptr + offset);
         if (((opt->flags & PLUGIN_VAR_TYPEMASK) == PLUGIN_VAR_STR) &&
              (opt->flags & PLUGIN_VAR_MEMALLOC))
         {
           char *def_val= *(char**)var_def_ptr(opt);
-          my_free(*(char**)val);
-          *(char**)val= def_val ? my_strdup(PSI_INSTRUMENT_ME, def_val, MYF(0)) : NULL;
+          my_free(*val);
+          *val= def_val ? my_strdup(PSI_INSTRUMENT_ME, def_val, MYF(0)) : NULL;
         }
         else
           memcpy(val, var_def_ptr(opt), var_storage_size(opt->flags));

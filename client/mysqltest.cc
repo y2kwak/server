@@ -2187,7 +2187,7 @@ int cat_file(DYNAMIC_STRING* ds, const char* filename, uint max_lines)
     max_lines= 10000;                           // Enough for mtr
 
   char *p= buff, *start= buff, *end=buff+len;
-  while (p < end && line <= max_lines)
+  while (p < end && line < max_lines)
   {
     /* Convert cr/lf to lf */
     if (*p == '\r' && p+1 < end && *(p+1)== '\n')

@@ -352,18 +352,8 @@ MY_STAT *my_stat(const char *path, MY_STAT *stat_area, myf my_flags)
                                            my_flags)))
       goto err;
 #ifndef _WIN32
-  {
-    int error;
-    if (my_flags & MY_NOSYMLINKS)
-      error= lstat((char *) path, (struct stat *) stat_area);
-    else
-      error= stat((char *) path, (struct stat *) stat_area);
-
-    if (!error)
-    {
-      DBUG_RETURN(stat_area);
-    }
-  }
+  if (!stat((char *) path, (struct stat *) stat_area))
+    DBUG_RETURN(stat_area);
 #else
   if (!my_win_stat(path, stat_area))
     DBUG_RETURN(stat_area);

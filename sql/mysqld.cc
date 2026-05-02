@@ -7936,14 +7936,15 @@ static void print_help()
 static void usage(void)
 {
   DBUG_ENTER("usage");
-  myf utf8_flag= global_system_variables.old_behavior &
-                 OLD_MODE_UTF8_IS_UTF8MB3 ? MY_UTF8_IS_UTF8MB3 : 0;
-  if (!(default_charset_info= get_charset_by_csname(default_character_set_name,
-					           MY_CS_PRIMARY,
-						         MYF(utf8_flag | MY_WME))))
-    exit(1);
   if (!default_collation_name)
-    default_collation_name= (char*) default_charset_info->coll_name.str;
+  {
+    myf utf8_flag= global_system_variables.old_behavior &
+                   OLD_MODE_UTF8_IS_UTF8MB3 ? MY_UTF8_IS_UTF8MB3 : 0;
+    default_charset_info= get_charset_by_csname(default_character_set_name,
+                            MY_CS_PRIMARY, MYF(utf8_flag | MY_WME));
+    if (default_charset_info)
+      default_collation_name= (char*) default_charset_info->coll_name.str;
+  }
   print_version();
   puts(ORACLE_WELCOME_COPYRIGHT_NOTICE("2000"));
   puts("Starts the MariaDB database server.\n");
