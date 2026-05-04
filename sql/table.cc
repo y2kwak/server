@@ -5308,6 +5308,7 @@ void update_create_info_from_table(HA_CREATE_INFO *create_info, TABLE *table)
   create_info->transactional= share->transactional;
   create_info->page_checksum= share->page_checksum;
   create_info->option_list= share->option_list;
+  create_info->option_struct= share->option_struct_table;
   create_info->sequence= MY_TEST(share->sequence);
 
   DBUG_VOID_RETURN;
