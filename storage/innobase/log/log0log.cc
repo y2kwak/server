@@ -474,7 +474,7 @@ void log_t::create(lsn_t lsn) noexcept
   ut_ad(is_latest());
   ut_ad(this == &log_sys);
 
-  next_checkpoint_no= 4 * is_encrypted();
+  next_checkpoint_no= uint16_t(4 * is_encrypted());
   write_lsn_offset= 0;
   base_lsn.store(lsn, std::memory_order_relaxed);
   flushed_to_disk_lsn.store(lsn, std::memory_order_relaxed);
