@@ -7854,14 +7854,29 @@ bool LEX::sp_open_cursor_for_stmt(THD *thd, const LEX_CSTRING *name,
   }
 
   /*
+    This statement is not supported:
+        OPEN strict_cursor_variable FOR 'SELECT ...';
+    It can be rewritten:
+    - either to use a SELECT statement instead of the dynamic string:
+        OPEN strict_cursor_variable FOR SELECT ...;
+    - or to make c0 a weak cursor variable (i.e.without the RETURN clause)
+        OPEN weak_cursor_variable FOR 'SELECT ...';
+  */
+  return_type_def= dynamic_cast<const sp_type_def_ref*>(spv[0].field_def.
+                                               get_attr_const_generic_ptr(0));
+  if (return_type_def && stmt->prepared_stmt.code())
+  {
+    my_error(ER_WRONG_USAGE, MYF(0), name->str, "OPEN..FOR <dynamic string>");
+    goto error;
+  }
+
+  /*
     If the REF CURSOR declaration has the RETURN clause and
     the query select list does not have asterisks, check
     that the row sizes are equal.
     A more thorough test (field-by-field assignability) is done
     later, after the cursor has been opened.
   */
-  return_type_def= dynamic_cast<const sp_type_def_ref*>(spv[0].field_def.
-                                               get_attr_const_generic_ptr(0));
   row_def_list=
     return_type_def && return_type_def->def().is_row() ?
     return_type_def->def().row_field_definitions() : nullptr;
