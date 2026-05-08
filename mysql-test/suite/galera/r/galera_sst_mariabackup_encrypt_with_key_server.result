@@ -24,3 +24,5 @@ connection node_2;
 FOUND 1 /Invalid value for WSREP_SST_OPT_REMOTE_USER/ in mysqld.1.err
 # cleanup
 # restart
+connection node_2;
+call mtr.add_suppression("Removing");

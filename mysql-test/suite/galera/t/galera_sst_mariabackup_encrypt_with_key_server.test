@@ -60,3 +60,6 @@ call mtr.add_suppression('Removing .*/xtrabackup_galera_info file due to signal'
 --exec echo ssl-cert=$MYSQL_TEST_DIR/std_data/server-cert.pem >> $MYSQLTEST_VARDIR/my.cnf
 --exec echo ssl-key=$MYSQL_TEST_DIR/std_data/server-key.pem >> $MYSQLTEST_VARDIR/my.cnf
 --source $MYSQL_TEST_DIR/include/start_mysqld.inc
+
+--connection node_2
+call mtr.add_suppression("Removing");
