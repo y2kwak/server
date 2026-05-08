@@ -2,7 +2,7 @@ Table	Create Table
 t1	CREATE TABLE `t1` (
   `Description` char(128) NOT NULL,
   `Attributes` varchar(256) DEFAULT NULL
-) ENGINE=CONNECT DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci `TABLE_TYPE`='ODBC' `CATFUNC`='Drivers'
+) ENGINE=CONNECT DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci `TABLE_TYPE`='ODBC' `CATFUNC`='Drivers'
 SET NAMES utf8;
 CREATE TABLE t1 ENGINE=CONNECT TABLE_TYPE=ODBC SRCDEF='SELECT %s, %d FROM t1' CONNECTION='Driver=SQLite3;Database=MTR_SUITE_DIR/std_data/test.sqlite3;NoWCHAR=yes' CHARSET=utf8 DATA_CHARSET=utf8;;
 ERROR HY000: SQLExecDirect: [SQLite]near "%": syntax error (1)
@@ -11,7 +11,7 @@ SHOW CREATE TABLE t1;
 Table	Create Table
 t1	CREATE TABLE `t1` (
   `a` varchar(64) DEFAULT NULL
-) ENGINE=CONNECT DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci CONNECTION='Driver=SQLite3;Database=MTR_SUITE_DIR/std_data/test.sqlite3;NoWCHAR=yes' `TABLE_TYPE`='ODBC' `DATA_CHARSET`='utf8'
+) ENGINE=CONNECT DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci CONNECTION='Driver=SQLite3;Database=MTR_SUITE_DIR/std_data/test.sqlite3;NoWCHAR=yes' `TABLE_TYPE`='ODBC' `DATA_CHARSET`='utf8'
 SELECT * FROM t1;
 a
 test1
@@ -23,8 +23,8 @@ CREATE TABLE t2 AS SELECT * FROM t1;
 SHOW CREATE TABLE t2;
 Table	Create Table
 t2	CREATE TABLE `t2` (
-  `a` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci
+  `a` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_uca1400_ai_ci DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci
 SELECT * FROM t2;
 a
 test1
