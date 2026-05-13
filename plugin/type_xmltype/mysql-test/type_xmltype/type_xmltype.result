@@ -298,4 +298,25 @@ SELECT CAST(1 AS XMLTYPE CHARSET utf32);
 ERROR 42000: This version of MariaDB doesn't yet support 'CAST(AS XMLTYPE CHARACTER SET ucs2/utf16/utf32)'
 SELECT CAST("<a></a>" AS XMLTYPE CHARSET utf32);
 ERROR 42000: This version of MariaDB doesn't yet support 'CAST(AS XMLTYPE CHARACTER SET ucs2/utf16/utf32)'
+#
+# MDEV-39589 Wrong results with xmltype as a virtual column.
+#
+CREATE TABLE t1(a VARCHAR(50), b XMLTYPE AS (a) VIRTUAL);
+INSERT INTO t1(a) VALUES('<yyyyyyyyy>xxxxxxxxxxxxxxxxxxx</yyyyyyyyy>');
+INSERT INTO t1(a) VALUES('a');
+INSERT INTO t1(a) VALUES('b');
+INSERT INTO t1(a) VALUES('<dddddddddd>tttttttttttttttttttttt</dddddddddd>');
+INSERT INTO t1(a) VALUES('e');
+SELECT * FROM t1;
+a	b
+<yyyyyyyyy>xxxxxxxxxxxxxxxxxxx</yyyyyyyyy>	<yyyyyyyyy>xxxxxxxxxxxxxxxxxxx</yyyyyyyyy>
+a	NULL
+b	NULL
+<dddddddddd>tttttttttttttttttttttt</dddddddddd>	<dddddddddd>tttttttttttttttttttttt</dddddddddd>
+e	NULL
+Warnings:
+Warning	1525	Incorrect XMLTYPE value: 'a'
+Warning	1525	Incorrect XMLTYPE value: 'b'
+Warning	1525	Incorrect XMLTYPE value: 'e'
+DROP TABLE t1;
 # End of 12.3 tests

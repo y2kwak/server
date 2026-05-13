@@ -200,7 +200,6 @@ INSERT INTO t1 VALUES(@x);
  
 DROP TABLE t1;
 
-
 --echo #
 --echo # MDEV-39575 Protocol::end_statement(): Assertion `0' failed after insert into xmltype union of valid and invalid xml.
 --echo #
@@ -234,5 +233,21 @@ SELECT CAST("<a></a>" AS XMLTYPE);
 SELECT CAST(1 AS XMLTYPE CHARSET utf32);
 --error ER_NOT_SUPPORTED_YET
 SELECT CAST("<a></a>" AS XMLTYPE CHARSET utf32);
+
+--echo #
+--echo # MDEV-39589 Wrong results with xmltype as a virtual column.
+--echo #
+
+CREATE TABLE t1(a VARCHAR(50), b XMLTYPE AS (a) VIRTUAL);
+INSERT INTO t1(a) VALUES('<yyyyyyyyy>xxxxxxxxxxxxxxxxxxx</yyyyyyyyy>');
+INSERT INTO t1(a) VALUES('a');
+INSERT INTO t1(a) VALUES('b');
+INSERT INTO t1(a) VALUES('<dddddddddd>tttttttttttttttttttttt</dddddddddd>');
+INSERT INTO t1(a) VALUES('e');
+ 
+--disable_view_protocol
+SELECT * FROM t1;
+--enable_view_protocol
+DROP TABLE t1;
 
 --echo # End of 12.3 tests

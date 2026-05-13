@@ -216,6 +216,11 @@ int Field_xmltype::store(const char *from, size_t length, CHARSET_INFO *cs)
   return Field_blob::store(from, length, cs);
 
 err:
+  if (maybe_null())
+    set_null();
+  else
+    Field_blob::store(STRING_WITH_LEN("<invalid_xml_replaced />"), cs);
+
   my_error(ER_WRONG_VALUE, MYF(0),
            "XMLTYPE", ErrConvString(from, length, cs).ptr());
   return -1;
