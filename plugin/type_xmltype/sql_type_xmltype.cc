@@ -190,6 +190,7 @@ int Field_xmltype::report_wrong_value(const ErrConv &val)
 static int check_parse_xml(const char *xml, size_t length, CHARSET_INFO *cs)
 {
   MY_XML_PARSER p;
+  int result;
 
   /* Prepare XML parser */
   my_xml_parser_create(&p);
@@ -197,7 +198,10 @@ static int check_parse_xml(const char *xml, size_t length, CHARSET_INFO *cs)
            MY_XML_FLAG_SKIP_TEXT_NORMALIZATION |
            MY_XML_FLAG_ASSERT_WELL_FORMED;
 
-  return my_xml_parse(&p, xml, length);
+  result= my_xml_parse(&p, xml, length);
+  my_xml_parser_free(&p);
+
+  return result;
 }
 
 

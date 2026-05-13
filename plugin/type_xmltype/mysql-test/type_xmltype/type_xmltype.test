@@ -188,3 +188,16 @@ DROP TABLE t1;
 
 --echo # End of 11.8 tests
 
+--echo #
+--echo # MDEV-39570 LeakSanitizer: detected memory leaks after insert with xmltype.
+--echo #
+
+CREATE TABLE t1(a XMLTYPE);
+
+SET @x = CONCAT(REPEAT('<element_with_long_name>', 30), 'leaf',
+                REPEAT('</element_with_long_name>', 30));
+INSERT INTO t1 VALUES(@x);
+ 
+DROP TABLE t1;
+
+--echo # End of 12.3 tests

@@ -252,3 +252,12 @@ INSERT INTO t1 VALUES('<?somePI pi content ?> <note><from>Lisa</from></note>');
 INSERT INTO t1 VALUES('<?xml version="1.0" ?> <note><?somePI pi content ?><from>Lisa</from></note>');
 DROP TABLE t1;
 # End of 11.8 tests
+#
+# MDEV-39570 LeakSanitizer: detected memory leaks after insert with xmltype.
+#
+CREATE TABLE t1(a XMLTYPE);
+SET @x = CONCAT(REPEAT('<element_with_long_name>', 30), 'leaf',
+REPEAT('</element_with_long_name>', 30));
+INSERT INTO t1 VALUES(@x);
+DROP TABLE t1;
+# End of 12.3 tests
