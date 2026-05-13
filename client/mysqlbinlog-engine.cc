@@ -502,6 +502,8 @@ read_more_data:
   else
   {
     size= std::min((uint32_t)max_len, s.chunk_len - s.chunk_read_offset);
+    if (s.in_page_offset + 3 + s.chunk_read_offset + size > binlog_page_size)
+      return read_error_corruption(s.file_no, s.page_no, "Invalid chunk read offset");
     memcpy(buffer, page_buffer + s.in_page_offset + 3 + s.chunk_read_offset, size);
     buffer+= size;
     s.chunk_read_offset+= size;
@@ -1062,6 +1064,11 @@ chunk_reader_mysqlbinlog::parse_file_header()
     return -1;
   }
   binlog_page_size= 1 << uint4korr(page_buffer + 4);
+  if (binlog_page_size > BINLOG_PAGE_SIZE_MAX)
+  {
+    error("Too large binlog page size, cannot read");
+    return -1;
+  }
   s.file_no= uint8korr(page_buffer + 16);
   return 0;
 }
