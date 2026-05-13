@@ -145,7 +145,8 @@ Type_handler_xmltype::make_constructor_item(THD *thd, List<Item> *args) const
     return NULL;
   Item_args tmp(thd, *args);
   return new (thd->mem_root)
-    Item_xmltype_typecast(thd, tmp.arguments()[0], NULL);
+    Item_xmltype_typecast(thd, tmp.arguments()[0],
+                          thd->variables.collation_connection);
 }
 
 
@@ -281,8 +282,33 @@ bool Item_xmltype_typecast::fix_length_and_dec(THD *thd)
 {
   Item_char_typecast::fix_length_and_dec_str();
   set_func_handler(&item_xmltype_typecast_func_handler);
+
+  if (cast_charset()->mbminlen > 1)
+  {
+    my_error(ER_NOT_SUPPORTED_YET, MYF(0),
+             "CAST(AS XMLTYPE CHARACTER SET ucs2/utf16/utf32)");
+    return true;
+  }
+
   return false;
 }
+
+
+String *Item_xmltype_typecast::val_str(String *to)
+{
+  String *res= Item_char_typecast::val_str(to);
+  if (!res)
+    return NULL;
+
+  if (check_parse_xml(res->ptr(), res->length(), res->charset()) != MY_XML_OK)
+  {
+    null_value= TRUE;
+    return NULL;
+  }
+
+  return res;
+}
+
 
 void Item_xmltype_typecast::print(String *str, enum_query_type query_type)
 {

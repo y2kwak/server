@@ -279,4 +279,23 @@ INSERT INTO t1 SELECT 'a';
 ERROR HY000: Incorrect XMLTYPE value: 'a'
 DROP TABLE t1;
 set sql_mode= DEFAULT;
+#
+# MDEV-39573 Server crashes in Item_char_typecast::fix_length_and_dec_internal after select xmltype
+#
+SELECT XMLTYPE(1);
+XMLTYPE(1)
+NULL
+SELECT XMLTYPE("<a></a>");
+XMLTYPE("<a></a>")
+<a></a>
+SELECT CAST(1 AS XMLTYPE);
+CAST(1 AS XMLTYPE)
+NULL
+SELECT CAST("<a></a>" AS XMLTYPE);
+CAST("<a></a>" AS XMLTYPE)
+<a></a>
+SELECT CAST(1 AS XMLTYPE CHARSET utf32);
+ERROR 42000: This version of MariaDB doesn't yet support 'CAST(AS XMLTYPE CHARACTER SET ucs2/utf16/utf32)'
+SELECT CAST("<a></a>" AS XMLTYPE CHARSET utf32);
+ERROR 42000: This version of MariaDB doesn't yet support 'CAST(AS XMLTYPE CHARACTER SET ucs2/utf16/utf32)'
 # End of 12.3 tests
