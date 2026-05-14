@@ -108,5 +108,5 @@ DROP TABLE t1;
 /*!40019 SET @@session.max_delayed_threads=0*/;
 /*!50003 SET @OLD_COMPLETION_TYPE=@@COMPLETION_TYPE,COMPLETION_TYPE=0*/;
 DELIMITER /*!*/;
-ERROR: Too large binlog page size, cannot read
+ERROR: Invalid/unsupported page size in InnoDB binlog file, cannot read
 # End of 12.3 tests
