@@ -223,7 +223,7 @@ CREATE TABLE t1 AS SELECT UpdateXML('<a><b>ccc</b><d></d></a>', '/a', '<e>fff</e
 SHOW CREATE TABLE t1;
 Table	Create Table
 t1	CREATE TABLE `t1` (
-  `x` xmltype CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL
+  `x` longtext CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci
 DROP TABLE t1;
 CREATE TABLE t1(a XMLTYPE);
@@ -234,20 +234,20 @@ ERROR HY000: Cannot cast 'decimal' as 'xmltype' in assignment of `test`.`t1`.`a`
 INSERT INTO t1 VALUES(11e-2);
 ERROR HY000: Cannot cast 'double' as 'xmltype' in assignment of `test`.`t1`.`a`
 INSERT INTO t1 VALUES("one");
-ERROR 22007: Incorrect XML value: 'one'
+ERROR HY000: Incorrect XMLTYPE value: 'one'
 INSERT INTO t1 VALUES("<a><b></b>");
-ERROR 22007: Incorrect XML value: '<a><b></b>'
+ERROR HY000: Incorrect XMLTYPE value: '<a><b></b>'
 INSERT INTO t1 VALUES("<a><b></b></a>");
 INSERT INTO t1 VALUES("<to>JOHN</to><from></from>");
-ERROR 22007: Incorrect XML value: '<to>JOHN</to><from></from>'
+ERROR HY000: Incorrect XMLTYPE value: '<to>JOHN</to><from></from>'
 INSERT INTO t1 VALUES('<note><to>JOHN</to><from></from></note>');
 INSERT INTO t1 VALUES('<?xml version="1.0" ?> <note><to>JOHN</to><from></from></note>');
 INSERT INTO t1 VALUES('<?xml version="1.0" ?> <?xml?> <note><to>JOHN</to><from></from></note>');
-ERROR 22007: Incorrect XML value: '<?xml version="1.0" ?> <?xml?> <note><to>JOHN</to><from></from></note>'
+ERROR HY000: Incorrect XMLTYPE value: '<?xml version="1.0" ?> <?xml?> <note><to>JOHN</to><from></from></note>'
 INSERT INTO t1 VALUES('<note><to>JOHN</to><from></from></note> <?xml version="1.0" ?> ');
-ERROR 22007: Incorrect XML value: '<note><to>JOHN</to><from></from></note> <?xml version="1.0" ?> '
+ERROR HY000: Incorrect XMLTYPE value: '<note><to>JOHN</to><from></from></note> <?xml version="1.0" ?> '
 INSERT INTO t1 VALUES('<?somePI pi content ?> <?xml version="1.0" ?> <note><from>Lisa</from></note>');
-ERROR 22007: Incorrect XML value: '<?somePI pi content ?> <?xml version="1.0" ?> <note><from>Lisa</from></note>'
+ERROR HY000: Incorrect XMLTYPE value: '<?somePI pi content ?> <?xml version="1.0" ?> <note><from>Lisa</from></note>'
 INSERT INTO t1 VALUES('<?somePI pi content ?> <note><from>Lisa</from></note>');
 INSERT INTO t1 VALUES('<?xml version="1.0" ?> <note><?somePI pi content ?><from>Lisa</from></note>');
 DROP TABLE t1;
@@ -260,4 +260,23 @@ SET @x = CONCAT(REPEAT('<element_with_long_name>', 30), 'leaf',
 REPEAT('</element_with_long_name>', 30));
 INSERT INTO t1 VALUES(@x);
 DROP TABLE t1;
+#
+# MDEV-39575 Protocol::end_statement(): Assertion `0' failed after insert into xmltype union of valid and invalid xml.
+#
+CREATE TABLE t1(x XMLTYPE) Engine=MyISAM;
+INSERT INTO t1 SELECT '<a/>' UNION SELECT 'a';
+ERROR HY000: Incorrect XMLTYPE value: 'a'
+SELECT * FROM t1;
+x
+<a/>
+DROP TABLE t1;
+#
+# MDEV-39577 Protocol::end_statement(): Assertion `0' failed with invalid xmltype + sql_mode=''
+#
+set sql_mode='';
+CREATE TABLE t1(x XMLTYPE);
+INSERT INTO t1 SELECT 'a';
+ERROR HY000: Incorrect XMLTYPE value: 'a'
+DROP TABLE t1;
+set sql_mode= DEFAULT;
 # End of 12.3 tests

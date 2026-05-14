@@ -164,22 +164,22 @@ INSERT INTO t1 VALUES(11.2);
 --error ER_ILLEGAL_PARAMETER_DATA_TYPES2_FOR_OPERATION
 INSERT INTO t1 VALUES(11e-2);
 
---error ER_TRUNCATED_WRONG_VALUE
+--error ER_WRONG_VALUE
 INSERT INTO t1 VALUES("one");
---error ER_TRUNCATED_WRONG_VALUE
+--error ER_WRONG_VALUE
 INSERT INTO t1 VALUES("<a><b></b>");
 
 INSERT INTO t1 VALUES("<a><b></b></a>");
---error ER_TRUNCATED_WRONG_VALUE
+--error ER_WRONG_VALUE
 INSERT INTO t1 VALUES("<to>JOHN</to><from></from>");
 
 INSERT INTO t1 VALUES('<note><to>JOHN</to><from></from></note>');
 INSERT INTO t1 VALUES('<?xml version="1.0" ?> <note><to>JOHN</to><from></from></note>');
---error ER_TRUNCATED_WRONG_VALUE
+--error ER_WRONG_VALUE
 INSERT INTO t1 VALUES('<?xml version="1.0" ?> <?xml?> <note><to>JOHN</to><from></from></note>');
---error ER_TRUNCATED_WRONG_VALUE
+--error ER_WRONG_VALUE
 INSERT INTO t1 VALUES('<note><to>JOHN</to><from></from></note> <?xml version="1.0" ?> ');
---error ER_TRUNCATED_WRONG_VALUE
+--error ER_WRONG_VALUE
 INSERT INTO t1 VALUES('<?somePI pi content ?> <?xml version="1.0" ?> <note><from>Lisa</from></note>');
 INSERT INTO t1 VALUES('<?somePI pi content ?> <note><from>Lisa</from></note>');
 INSERT INTO t1 VALUES('<?xml version="1.0" ?> <note><?somePI pi content ?><from>Lisa</from></note>');
@@ -199,5 +199,25 @@ SET @x = CONCAT(REPEAT('<element_with_long_name>', 30), 'leaf',
 INSERT INTO t1 VALUES(@x);
  
 DROP TABLE t1;
+
+
+--echo #
+--echo # MDEV-39575 Protocol::end_statement(): Assertion `0' failed after insert into xmltype union of valid and invalid xml.
+--echo #
+CREATE TABLE t1(x XMLTYPE) Engine=MyISAM;
+--error ER_WRONG_VALUE
+INSERT INTO t1 SELECT '<a/>' UNION SELECT 'a';
+SELECT * FROM t1;
+DROP TABLE t1;
+
+--echo #
+--echo # MDEV-39577 Protocol::end_statement(): Assertion `0' failed with invalid xmltype + sql_mode=''
+--echo #
+set sql_mode='';
+CREATE TABLE t1(x XMLTYPE);
+--error ER_WRONG_VALUE
+INSERT INTO t1 SELECT 'a';
+DROP TABLE t1;
+set sql_mode= DEFAULT;
 
 --echo # End of 12.3 tests

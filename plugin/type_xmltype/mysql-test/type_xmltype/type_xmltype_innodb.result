@@ -1,0 +1,18 @@
+#
+# MDEV-39575 Protocol::end_statement(): Assertion `0' failed after insert into xmltype union of valid and invalid xml.
+#
+CREATE TABLE t1(x XMLTYPE) Engine=InnoDB;
+INSERT INTO t1 SELECT '<a/>' UNION SELECT 'a';
+ERROR HY000: Incorrect XMLTYPE value: 'a'
+SELECT * FROM t1;
+x
+DROP TABLE t1;
+SET sql_mode='';
+CREATE TABLE t1(x XMLTYPE) Engine=InnoDB;
+INSERT INTO t1 SELECT '<a/>' UNION SELECT 'a';
+ERROR HY000: Incorrect XMLTYPE value: 'a'
+SELECT * FROM t1;
+x
+DROP TABLE t1;
+set sql_mode=default;
+# End of 12.3 tests

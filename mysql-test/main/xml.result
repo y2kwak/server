@@ -1343,10 +1343,10 @@ SELECT UpdateXML(1, '/a', '') a
 FROM t1
 GROUP BY a, name;
 a
-
-
-
-
-
+1
+1
+1
+1
+1
 DROP TABLE t1;
 # End of 12.3 tests
