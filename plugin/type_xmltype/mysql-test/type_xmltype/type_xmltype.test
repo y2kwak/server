@@ -263,4 +263,30 @@ SHOW CREATE TABLE t;
 DROP TABLE t;
 SET sql_mode= default;
 
+--echo #
+--echo # MDEV-39599 heap-use-after-free in escape_string_for_mysql after sp with invalid xml (xmltype))
+--echo #
+SET sql_mode = '';
+ 
+CREATE TABLE t(s VARCHAR(50));
+INSERT INTO t VALUES ('<a/>'), ('a');
+ 
+--delimiter //
+CREATE PROCEDURE sp()
+  BEGIN
+  DECLARE v XMLTYPE;
+  SELECT s INTO v FROM t WHERE s = '<a/>';
+  SELECT s INTO v FROM t WHERE s = 'a';
+  SELECT v;
+END//
+
+--delimiter ;
+
+--error ER_WRONG_VALUE
+CALL sp();
+
+SET sql_mode= default;
+DROP PROCEDURE sp;
+DROP TABLE t;
+
 --echo # End of 12.3 tests

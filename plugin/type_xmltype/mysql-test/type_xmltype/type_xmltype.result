@@ -341,4 +341,22 @@ t	CREATE TABLE `t` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci
 DROP TABLE t;
 SET sql_mode= default;
+#
+# MDEV-39599 heap-use-after-free in escape_string_for_mysql after sp with invalid xml (xmltype))
+#
+SET sql_mode = '';
+CREATE TABLE t(s VARCHAR(50));
+INSERT INTO t VALUES ('<a/>'), ('a');
+CREATE PROCEDURE sp()
+BEGIN
+DECLARE v XMLTYPE;
+SELECT s INTO v FROM t WHERE s = '<a/>';
+SELECT s INTO v FROM t WHERE s = 'a';
+SELECT v;
+END//
+CALL sp();
+ERROR HY000: Incorrect XMLTYPE value: 'a'
+SET sql_mode= default;
+DROP PROCEDURE sp;
+DROP TABLE t;
 # End of 12.3 tests
