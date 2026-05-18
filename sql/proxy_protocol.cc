@@ -307,6 +307,8 @@ static int parse_subnet(char *addr_str, struct subnet *subnet)
     subnet->bits= 0;
     return 0;
   }
+  else
+    return -1;
 
   char *pmask= strchr(addr_str, '/');
   if (!pmask)
@@ -367,7 +369,7 @@ static int parse_networks(const char *subnets_str, subnet **out_subnets, size_t 
     goto end;
   }
 
-  max_subnets= MY_MAX(3,strlen(subnets_str)/2);
+  max_subnets= MY_MAX(3,strlen(subnets_str)/3+1);
   subnets= (subnet *)my_malloc(PSI_INSTRUMENT_ME,
                                max_subnets * sizeof(subnet), MY_ZEROFILL);
 
