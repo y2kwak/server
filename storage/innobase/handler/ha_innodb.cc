@@ -2809,7 +2809,6 @@ static int innobase_close_connection(THD *thd) noexcept
 */
 static int innobase_rollback_by_xid(XID *xid) noexcept
 {
-  DBUG_EXECUTE_IF("innobase_xa_fail", return XAER_RMFAIL;);
   if (high_level_read_only || recv_sys.rpo)
     return XAER_RMFAIL;
   if (trx_t *trx= trx_get_trx_by_xid(xid))
@@ -17438,9 +17437,6 @@ innobase_commit_by_xid(
 /*===================*/
 	XID*		xid)	/*!< in: X/Open XA transaction identification */
 {
-	DBUG_EXECUTE_IF("innobase_xa_fail",
-			return XAER_RMFAIL;);
-
 	if (high_level_read_only || recv_sys.rpo) {
 		return(XAER_RMFAIL);
 	}
@@ -17472,9 +17468,7 @@ innobase_commit_by_xid(
 */
 static int innobase_recover_rollback_by_xid(const XID *xid)
 {
-  DBUG_EXECUTE_IF("innobase_xa_fail", return XAER_RMFAIL;);
-
-  if (high_level_read_only)
+  if (high_level_read_only || recv_sys.rpo)
     return XAER_RMFAIL;
 
   /*
