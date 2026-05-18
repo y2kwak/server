@@ -149,4 +149,57 @@ DROP TABLE t1;
 include/save_master_gtid.inc
 connection server_3;
 include/sync_with_master_gtid.inc
+# Case 7:
+# -----------------------------------------------------------------
+#  combination of forward and reverse comments
+connection server_1;
+create table t1 (correct int);
+create /*!990000 or replace*/ table /*!!989999 if not exists */ t1 (wrong int);
+Warnings:
+Note	1050	Table 't1' already exists
+include/save_master_gtid.inc
+connection server_3;
+include/sync_with_master_gtid.inc
+show create table t1;
+Table	Create Table
+t1	CREATE TABLE `t1` (
+  `correct` int(11) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci
+connection server_1;
+create or replace table t1 (wrong int);
+create /*!!989999 or replace*/ table /*!999999 if not exists */ t1 (correct int);
+include/save_master_gtid.inc
+connection server_3;
+include/sync_with_master_gtid.inc
+show create table t1;
+Table	Create Table
+t1	CREATE TABLE `t1` (
+  `correct` int(11) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci
+connection server_1;
+create or replace table t1 (correct int);
+create /*!!120000 or replace*/ table /*!119999 if not exists */ t1 (wrong int);
+Warnings:
+Note	1050	Table 't1' already exists
+include/save_master_gtid.inc
+connection server_3;
+include/sync_with_master_gtid.inc
+show create table t1;
+Table	Create Table
+t1	CREATE TABLE `t1` (
+  `correct` int(11) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci
+connection server_1;
+create or replace table t1 (wrong int);
+create /*!120000 or replace*/ table /*!!119999 if not exists */ t1 (correct int);
+include/save_master_gtid.inc
+connection server_3;
+include/sync_with_master_gtid.inc
+show create table t1;
+Table	Create Table
+t1	CREATE TABLE `t1` (
+  `correct` int(11) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci
+connection server_1;
+drop table t1;
 include/rpl_end.inc

@@ -144,4 +144,39 @@ DROP TABLE t1;
 --connection server_3
 --source include/sync_with_master_gtid.inc
 
+--echo # Case 7:
+--echo # -----------------------------------------------------------------
+--echo #  combination of forward and reverse comments
+
+--connection server_1
+create table t1 (correct int);
+create /*!990000 or replace*/ table /*!!989999 if not exists */ t1 (wrong int);
+--source include/save_master_gtid.inc
+--connection server_3
+--source include/sync_with_master_gtid.inc
+show create table t1;
+--connection server_1
+create or replace table t1 (wrong int);
+create /*!!989999 or replace*/ table /*!999999 if not exists */ t1 (correct int);
+--source include/save_master_gtid.inc
+--connection server_3
+--source include/sync_with_master_gtid.inc
+show create table t1;
+--connection server_1
+create or replace table t1 (correct int);
+create /*!!120000 or replace*/ table /*!119999 if not exists */ t1 (wrong int);
+--source include/save_master_gtid.inc
+--connection server_3
+--source include/sync_with_master_gtid.inc
+show create table t1;
+--connection server_1
+create or replace table t1 (wrong int);
+create /*!120000 or replace*/ table /*!!119999 if not exists */ t1 (correct int);
+--source include/save_master_gtid.inc
+--connection server_3
+--source include/sync_with_master_gtid.inc
+show create table t1;
+--connection server_1
+drop table t1;
+
 --source include/rpl_end.inc
