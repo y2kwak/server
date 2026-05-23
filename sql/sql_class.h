@@ -6038,6 +6038,12 @@ public:
              (variables.note_verbosity & NOTE_VERBOSITY_EXPLAIN)));
   }
 
+  uint gconcat_max_len()
+  {
+    return MY_MIN(variables.group_concat_max_len,
+                  (uint)variables.max_allowed_packet);
+  }
+
   bool vers_insert_history_fast(const TABLE *table)
   {
     DBUG_ASSERT(table->versioned());
