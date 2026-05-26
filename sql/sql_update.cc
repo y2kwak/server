@@ -1795,8 +1795,7 @@ bool Multiupdate_prelocking_strategy::handle_end(THD *thd)
 }
 
 
-multi_update::multi_update(THD *thd_arg,
-                           TABLE_LIST *table_list,
+multi_update::multi_update(THD *thd_arg, TABLE_LIST *table_list,
                            List<TABLE_LIST> *leaves_list,
                            List<Item> *field_list,
                            List<Item> *value_list,
