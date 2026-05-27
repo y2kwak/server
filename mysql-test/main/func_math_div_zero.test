@@ -16,7 +16,7 @@ SELECT LOG(10);
 SELECT LN(2.718);
 SELECT LOG2(8);
 SELECT LOG10(100);
-SELECT LOG(2, 8);
+SELECT round(LOG(2, 8), 5);
 SHOW WARNINGS;
 --echo # Should be empty - valid inputs produce no warnings
 
